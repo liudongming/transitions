@@ -53,19 +53,6 @@ def listify(obj):
     return obj if isinstance(obj, (list, tuple, EnumMeta)) else [obj]
 
 
-def tuplify(obj):
-    """Wraps a passed object into a tuple in case it has not been a list, tuple before.
-    Returns an empty tuple in case ``obj`` is None.
-    Args:
-        obj: instance to be converted into a tuple.
-    Returns:
-        list: May also return a list in case ``obj`` has been a list before.
-    """
-    if obj is None:
-        return tuple()
-    return obj if isinstance(obj, (tuple, list, EnumMeta)) else (obj, )
-
-
 def _prep_ordered_arg(desired_length, arguments=None):
     """Ensure list of arguments passed to add_ordered_transitions has the proper length.
     Expands the given arguments and apply same condition, callback
@@ -77,7 +64,7 @@ def _prep_ordered_arg(desired_length, arguments=None):
     Returns:
         list: Parameter sets with the desired length.
     """
-    arguments = tuplify(arguments) if arguments is not None else (None, )
+    arguments = listify(arguments) if arguments is not None else (None, )
     if len(arguments) != desired_length and len(arguments) != 1:
         raise ValueError("Argument length must be either 1 or the same length as "
                          "the number of transitions.")
@@ -248,10 +235,10 @@ class Transition(object):
 
         self.conditions = []
         if conditions is not None:
-            for cond in tuplify(conditions):
+            for cond in listify(conditions):
                 self.conditions.append(self.condition_cls(cond))
         if unless is not None:
-            for cond in tuplify(unless):
+            for cond in listify(unless):
                 self.conditions.append(self.condition_cls(cond, target=False))
 
     def _eval_conditions(self, event_data):
@@ -591,7 +578,7 @@ class Machine(object):
 
     def add_model(self, model, initial=None):
         """ Register a model with the state machine, initializing triggers and callbacks. """
-        models = tuplify(model)
+        models = listify(model)
 
         if initial is None:
             if self.initial is None:
@@ -616,7 +603,7 @@ class Machine(object):
     def remove_model(self, model):
         """ Remove a model from the state machine. The model will still contain all previously added triggers
         and callbacks, but will not receive updates when states or transitions are added to the Machine. """
-        models = tuplify(model)
+        models = listify(model)
 
         for mod in models:
             self.models.remove(mod)
@@ -743,7 +730,7 @@ class Machine(object):
         """
         if not isinstance(state, State):
             state = self.get_state(state)
-        models = self.models if model is None else tuplify(model)
+        models = self.models if model is None else listify(model)
 
         for mod in models:
             setattr(mod, self.model_attribute, state.value)
@@ -779,7 +766,7 @@ class Machine(object):
         if ignore is None:
             ignore = self.ignore_invalid_triggers
 
-        states = tuplify(states)
+        states = listify(states)
 
         for state in states:
             if isinstance(state, (string_types, Enum)):
@@ -920,7 +907,7 @@ class Machine(object):
             # states are checked lazily which means we will only raise exceptions when the passed state
             # is a State object because of potential confusion (see issue #155 for more details)
             source = [s.name if isinstance(s, State) and self._has_state(s, raise_error=True) or hasattr(s, 'name') else
-                      s for s in tuplify(source)]
+                      s for s in listify(source)]
 
         for state in source:
             if dest == self.wildcard_same:
@@ -942,7 +929,7 @@ class Machine(object):
             transitions (list): A list of transitions.
 
         """
-        for trans in tuplify(transitions):
+        for trans in listify(transitions):
             if isinstance(trans, list):
                 self.add_transition(*trans)
             else:
@@ -1053,8 +1040,8 @@ class Machine(object):
             source (str): Limits removal to transitions from a certain state.
             dest (str): Limits removal to transitions to a certain state.
         """
-        source = tuplify(source) if source != "*" else source
-        dest = tuplify(dest) if dest != "*" else dest
+        source = listify(source) if source != "*" else source
+        dest = listify(dest) if dest != "*" else dest
         # outer comprehension, keeps events if inner comprehension returns lists with length > 0
         tmp = {key: value for key, value in
                {k: [t for t in v

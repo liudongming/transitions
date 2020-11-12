@@ -5,7 +5,7 @@ except ImportError:
 
 from collections import OrderedDict
 
-from transitions.extensions.nesting import NestedState as State, _build_state_tuple
+from transitions.extensions.nesting import NestedState as State, _build_state_list
 from transitions.extensions import HierarchicalGraphMachine
 from .test_nesting import TestNestedTransitions as TestNested
 from .test_pygraphviz import pgv
@@ -172,11 +172,11 @@ class TestParallel(TestNested):
 
     def test_model_state_conversion(self):
         sep = self.state_cls.separator
-        states = ('P{0}1'.format(sep),
-                  ('P{0}2{0}a'.format(sep),
-                   (('P{0}2{0}b{0}x{0}1'.format(sep),
-                     'P{0}2{0}b{0}x{0}2'.format(sep)),
-                    'P{0}2{0}b{0}y'.format(sep))))
+        states = ['P{0}1'.format(sep),
+                  ['P{0}2{0}a'.format(sep),
+                   [['P{0}2{0}b{0}x{0}1'.format(sep),
+                     'P{0}2{0}b{0}x{0}2'.format(sep)],
+                    'P{0}2{0}b{0}y'.format(sep)]]]
         tree = OrderedDict(
             [('P', OrderedDict(
                 [('1', OrderedDict()),
@@ -193,7 +193,7 @@ class TestParallel(TestNested):
         )
         m = self.machine_cls()
         self.assertEqual(tree, m._build_state_tree(states, sep))
-        self.assertEqual(states, _build_state_tuple(tree, sep))
+        self.assertEqual(states, _build_state_list(tree, sep))
 
 
 @skipIf(pgv is None, "pygraphviz is not available")
