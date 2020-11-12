@@ -334,9 +334,9 @@ class TestHierarchicalAsync(TestAsync):
                                  {'name': '3', 'children': ['x', 'y', 'z'], 'initial': 'y'}]}]
         machine = self.machine_cls(states=states, initial='A')
         asyncio.run(machine.to_P())
-        self.assertEqual(['P{0}1{0}a'.format(machine.state_cls.separator),
+        self.assertEqual(('P{0}1{0}a'.format(machine.state_cls.separator),
                           'P{0}2{0}b'.format(machine.state_cls.separator),
-                          'P{0}3{0}y'.format(machine.state_cls.separator)], machine.state)
+                          'P{0}3{0}y'.format(machine.state_cls.separator)), machine.state)
         asyncio.run(machine.to_B())
         self.assertTrue(machine.is_B())
 
