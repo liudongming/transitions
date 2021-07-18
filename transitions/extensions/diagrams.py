@@ -64,6 +64,7 @@ class GraphMachine(MarkupMachine):
         'node': {
             '': {},
             'default': {
+                'fontname': 'Microsoft YaHei',
                 'style': 'rounded, filled',
                 'shape': 'rectangle',
                 'fillcolor': 'white',
@@ -71,11 +72,13 @@ class GraphMachine(MarkupMachine):
                 'peripheries': '1'
             },
             'inactive': {
+                'fontname': 'Microsoft YaHei',
                 'fillcolor': 'white',
                 'color': 'black',
                 'peripheries': '1'
             },
             'parallel': {
+                'fontname': 'Microsoft YaHei',
                 'shape': 'rectangle',
                 'color': 'black',
                 'fillcolor': 'white',
@@ -83,11 +86,13 @@ class GraphMachine(MarkupMachine):
                 'peripheries': '1'
             },
             'active': {
+                'fontname': 'Microsoft YaHei',
                 'color': 'red',
                 'fillcolor': 'darksalmon',
                 'peripheries': '2'
             },
             'previous': {
+                'fontname': 'Microsoft YaHei',
                 'color': 'blue',
                 'fillcolor': 'azure2',
                 'peripheries': '1'
@@ -96,30 +101,36 @@ class GraphMachine(MarkupMachine):
         'edge': {
             '': {},
             'default': {
+                'fontname': 'Microsoft YaHei',
                 'color': 'black'
             },
             'previous': {
+                'fontname': 'Microsoft YaHei',
                 'color': 'blue'
             }
         },
         'graph': {
             '': {},
             'default': {
+                'fontname': 'Microsoft YaHei',
                 'color': 'black',
                 'fillcolor': 'white',
                 'style': 'solid'
             },
             'previous': {
+                'fontname': 'Microsoft YaHei',
                 'color': 'blue',
                 'fillcolor': 'azure2',
                 'style': 'filled'
             },
             'active': {
+                'fontname': 'Microsoft YaHei',
                 'color': 'red',
                 'fillcolor': 'darksalmon',
                 'style': 'filled'
             },
             'parallel': {
+                'fontname': 'Microsoft YaHei',
                 'color': 'black',
                 'fillcolor': 'white',
                 'style': 'dotted'
